@@ -37,15 +37,15 @@ PPT-GPU is a scalable and flexible framework to predict the performance of GPUs 
 
 * Linux OS
 * python v3.x   
-  * scipy package (pip install scipy)
+  * scipy package (conda install -c scipy)
   * greenlet package (conda install -c anaconda greenlet)
   * joblib package (conda install -c anaconda joblib)
-* GCC > v5.x tested with 7.3.1 and 9 on centos 8
+* GCC > v5.x, tested on v.7 and v.9 on centos 8
 * make
 * glibc
-* MPICH v.3.2.3 (if you plan to use the PDES engine to run multiple kernels in parallel)
+* MPICH (if you plan to use the PDES engine to run multiple kernels in parallel) (tested with version 3.2.3)
 
-### Extracting the traces   
+### Trace Extraction   
 
 * A GPU device with compute capability = 3.5 or later
 * Software dependencies for extracting the memory traces and the SASS instructions traces are in the ***tracing_tool*** directory

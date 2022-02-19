@@ -7,7 +7,7 @@ The ***reuse_distance_tool*** is based on the available code of the following pa
 * Step 1: parda use ***glib*** standard linux library.    
         - Ubuntu system, execute following sudo command:
                 ```
-                sudo apt-get install glib
+                sudo apt-get install libglib2.0-dev
                 ```  
         - Centos system, execute following sudo command: 
         ```

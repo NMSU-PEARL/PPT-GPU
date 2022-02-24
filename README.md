@@ -33,6 +33,11 @@ PPT-GPU is a scalable and flexible framework to predict the performance of GPUs 
 
 ## Dependencies
 
+- see ***dependecies*** file for the packages and versions PPT-GPU was tested with
+
+- alternatively, You can use our docker image that has all the dependencies installed: ***https://hub.docker.com/repository/docker/yarafa/ppt-gpu/***
+
+
 ### Simulation
 
 * Linux OS
@@ -40,10 +45,14 @@ PPT-GPU is a scalable and flexible framework to predict the performance of GPUs 
   * scipy package (conda install -c scipy)
   * greenlet package (conda install -c anaconda greenlet)
   * joblib package (conda install -c anaconda joblib)
-* GCC > v5.x, tested on v.7 and v.9 on centos 8
-* make
+* GCC > v5.x, tested on v.7 and v.9 
 * glibc
 * MPICH (if you plan to use the PDES engine to run multiple kernels in parallel) (tested with version 3.2.3)
+
+- ***you can pull a docker image and use in simulation using this command***   
+      ```
+      docker pull yarafa/ppt-gpu:simulation-latest
+      ```
 
 ### Trace Extraction   
 
@@ -51,17 +60,22 @@ PPT-GPU is a scalable and flexible framework to predict the performance of GPUs 
 * Software dependencies for extracting the memory traces and the SASS instructions traces are in the ***tracing_tool*** directory
 * Software dependencies for extracting the PTX instructions traces are in the ***llvm_tool*** directory
 
-#### see *dependecies* for the packages and versions tested on
+- ***you can pull a docker image and use in trace extraction using this command***  
+STILL IN PROGRESS 
+      ```
+      docker pull yarafa/ppt-gpu:traces-latest
+      ```
 
 
 ## Steps for running  
 
 Running simulation is straightforward. Here are the steps: 
 
-1. **Configure & Update MPI path**
-    * In *simian.py*, update ***defaultMpichLibName*** with the ibmpich.so
-    * If you dont want to use MPI, update **useMPI** to False instead of True for the Simian engine paramater inside *ppt.py* file (line 278, **simianEngine** variable)
 
+1. **Configure & Update MPI path**
+SKIP THIS STEP IF RUNNING THROUGH DOCKER
+    * In *simian.py*, update ***defaultMpichLibName*** with the ibmpich.so
+   
 2. **Extract the traces of the application**
     * Go to ***tracing_tool*** folder and follow the instructions in the Readme file to build the tracing tool files
     * The ***tracing_tool*** extracts the application memory trace (automatically output a folder named ***memory_traces***) and the application SASS trace (automatically output a folder named ***sass_traces***). It also outputs a configuration file named **app_config.py** that has all information about the application kernels
@@ -82,14 +96,13 @@ Running simulation is straightforward. Here are the steps:
    * Go to ***reuse_distance_tool*** and follow the instructions in the Readme file to build the code
 
 4. **Modeling the correct GPU configurations**  
-
     The ***hardware*** folder has an example of multiple hardware configurations. You can choose to model these or define your own in a new file. You can also define the ISA latencies numbers, and the compute capability configurations inside ***hardware/ISA*** and ***hardware/compute_capability***, respectively 
 
 5. **Running the simulations**   
-  
-  * For Parallel kernels execution, make sure to set the right libmpich.so library path in *defaultMpichLibName* variable inside *simian.py* file**
-  
-  * TO RUN: 
+
+  * Navigate to the home PPT-GPU directory
+    
+  * TO RUN WITHOUT DOCKER: 
       ```
     python ppt.py --app <application path> --sass <or --ptx> (for patx/sass instructions traces)
     --config <target GPU hardware configuration file> --granularity 2 
@@ -97,27 +110,27 @@ Running simulation is straightforward. Here are the steps:
     
     For example, running 2mm application on TITANV with sass traces. Assuming that 2mm path is *"/home/test/Workloads/2mm"*
     ```
-    python ppt.py --app /home/test/Workloads/2mm/ --sass --config TITANV --granularity 2 
-    ```
-    
-    The above command will run all kernels sequentially, to run all kernel in parallel using the PDES engine:     
-    ```
-    mpirun -n 2 python ppt.py --app /home/test/Workloads/2mm/ --sass --config TITANV --granularity 2 
+    mpiexec -n 2 python ppt.py --app /home/test/Workloads/2mm/ --sass --config TITANV --granularity 2 
     ```
     
     To choose specific kernels only, (let's say in PTX traces): 
 
     ```
-    mpirun -n 1 python ppt.py --app /home/test/Workloads/2mm/ --ptx --config TITANV --granularity 2 --kernel 1
+    mpiexec -n 1 python ppt.py --app /home/test/Workloads/2mm/ --ptx --config TITANV --granularity 2 --kernel 1
     ```
     
+ * TO RUN WITH DOCKER: 
+
+    ```
+   docker run --rm -v $(pwd):$(pwd) -v /home/test/Workloads:/home/test/Workloads -w $(pwd) yarafa/ppt-gpu:simulation-latest mpiexec -n 2 python ppt.py --app /home/test/Workloads/2mm/ --sass --config TITANV --granularity 2
+    ```
     
     **Kernels are ordered in the *app_config.py* file. Please refer to the file to know the information of kernels and the orders**   
   
 
 6. **Reading the output**
 
-  The performance results are found inside each application file path. Outputs are per kernel.  
+    The performance results are found inside each application file path. Outputs are per kernel.  
   
 
 ## Worklaods
@@ -126,7 +139,6 @@ You can find various GPU benchmarks that can be used in your research in the fol
 
 
 
-<br />
 <br />
 <br />
 

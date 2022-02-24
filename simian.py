@@ -63,7 +63,7 @@ import types #Used to bind Service at runtime to specific instances
 import ctypes as C #For FFI of MPICH
 
 # If mpich library is not explicitly provided when Simian is invoked with useMPI=True, then check for libmpich in parent directory of this file
-defaultMpichLibName = os.path.join(os.path.dirname(__file__), "..", "/software/mpich/lib/libmpich.so")
+defaultMpichLibName = os.path.join(os.path.dirname(__file__), "..", "/opt/mpich/lib/libmpich.so")
 
 #===========================================================================================
 # utils.py

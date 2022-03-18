@@ -7,6 +7,8 @@ NVBIT does not require application source code, any pre-compiled GPU application
 
 * Please see our docker [wiki](https://github.com/NMSU-PEARL/PPT-GPU/wiki/Docker-Images-and-Usage) page for how to build the tracing tool and extract the traces using docker.
 
+*  Setup the **MAX_KERNELS** variable in ***tracer.cu*** to define the limit on the number of kernels you want to instrument in the application 
+
 * For stanalone building and running of the tracing_tool (no docker), please see below: 
 
   ### Building the tool
@@ -20,7 +22,4 @@ NVBIT does not require application source code, any pre-compiled GPU application
   LD_PRELOAD=~/PPT-GPU/tracing_tool/tracer.so ./app.out
   ```
   
-   The above command outputs two folders ***memory_traces*** and ***sass_traces*** each has the applications kernel traces. Setup the **MAX_KERNELS** variable in ***tracer.cu*** to define the limit on the number of kernels you want to instrument in the application 
-  
-
-
+   The above command outputs two folders ***memory_traces*** and ***sass_traces*** each has the applications kernel traces. It also output ***app_config*** file whoch has information about the kernel executing inside the application. 

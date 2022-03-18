@@ -5,9 +5,9 @@ NVBIT does not require application source code, any pre-compiled GPU application
 
 ## Usage
 
-* Please see our docker [wiki](https://github.com/NMSU-PEARL/PPT-GPU/wiki/Docker-Images-and-Usage) page for how to build the teacing tool and extract the traces using docker.
+* Please see our docker [wiki](https://github.com/NMSU-PEARL/PPT-GPU/wiki/Docker-Images-and-Usage) page for how to build the tracing tool and extract the traces using docker.
 
-* For stanalone buklding  and running of the tracing_tool (no docker), please see below: 
+* For stanalone building and running of the tracing_tool (no docker), please see below: 
 
 ## Building the tool
   

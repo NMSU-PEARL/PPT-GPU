@@ -3,15 +3,11 @@ The ***tracer_tool*** is used to extract the memory and SASS traces. This repo u
 
 NVBIT does not require application source code, any pre-compiled GPU application should work regardless of which compiler (or version) has been used (i.e. nvcc, pgicc, etc).
 
-## Dependecies
+## Usage
 
-  * A GPU with SM compute capability: >= 3.5 && <= 8.6
-  * Host CPU: x86_64, ppc64le, arm64
-  * OS: Linux
-  * GCC version: >= 5.3.0
-  * CUDA version: >= 8.0 && <= 11
-  * CUDA driver version: <= 450.36
-  * nvcc version for tool compilation >= 10.2
+* Please see our docker [wiki](https://github.com/NMSU-PEARL/PPT-GPU/wiki/Docker-Images-and-Usage) page for how to build the teacing tool and extract the traces using docker.
+
+* For stanalone buklding  and running of the tracing_tool (no docker), please see below: 
 
 ## Building the tool
   
@@ -20,13 +16,11 @@ NVBIT does not require application source code, any pre-compiled GPU application
 
 ## Extracting the traces
   
-  Assuming you have a precompiled application in *"/home/yarafa/2mm"* and the tool is built in *"/home/tracer_tool"* path. You can run the following command to get the traces
-  
   ```
-  LD_PRELOAD=~/PPT-GPU/tracing_tool/tracer.so ./2mm.out
+  LD_PRELOAD=~/PPT-GPU/tracing_tool/tracer.so ./app.out
   ```
   
-  The above command outputs two folders ***memory_traces*** and ***sass_traces*** each has the applications kernel traces. Setup the **MAX_KERNELS** variable in ***tracer.cu*** to define the limit on the number of kernels you want to instrument in the application 
+The above command outputs two folders ***memory_traces*** and ***sass_traces*** each has the applications kernel traces. Setup the **MAX_KERNELS** variable in ***tracer.cu*** to define the limit on the number of kernels you want to instrument in the application 
   
 
 

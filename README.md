@@ -36,8 +36,9 @@ PPT-GPU is a scalable and flexible framework to predict the performance of GPUs 
 ***The wiki page includes the following:***
 
 1. Infomation about the [SW & HW dependencies](https://github.com/NMSU-PEARL/PPT-GPU/wiki/SW-&-HW-Dependencies) needed for trace extraction and simualtions
-2. [Steps](https://github.com/NMSU-PEARL/PPT-GPU/wiki/Steps-For-Running) for running the simulator 
-3. Altenatively if you plan to use our pre-configured docker images, you can find the instructions in the [docker images & usage](https://github.com/NMSU-PEARL/PPT-GPU/wiki/Docker-Images-and-Usage) wiki page
+2. Altenatively if you plan to use our pre-configured docker images, you can find the instructions in the [docker images & usage](https://github.com/NMSU-PEARL/PPT-GPU/wiki/Docker-Images-and-Usage) wiki page
+3. [Steps](https://github.com/NMSU-PEARL/PPT-GPU/wiki/Steps-For-Running-PPT-GPU) for running the simulator 
+
 
 <br />
 

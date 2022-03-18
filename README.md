@@ -4,7 +4,7 @@
 PPT-GPU is a scalable and flexible framework to predict the performance of GPUs running general purpose workloads. PPT-GPU can use the virtual (PTX) or the native (SASS) ISAs without sacrificing accuracy, ease of use, or portability. The tool is currently focused on NVIDIA GPUs. We plan to extend our approach to model other vendors' GPUs such as AMD and Intel.
 
 
-### Papers
+## Papers
 
 - For more information, check out the [SC' 21](https://doi.org/10.1145/3458817.3476221) paper ***(Hybrid, Scalable, Trace-Driven Performance Modeling of GPGPUs)***.
 
@@ -31,111 +31,19 @@ PPT-GPU is a scalable and flexible framework to predict the performance of GPUs 
     }
     ```
 
-## Dependencies
+### See the [wiki](https://github.com/NMSU-PEARL/PPT-GPU/wiki) page for installation and usage of PPT-GPU.
 
-- see ***dependecies*** file for the packages and versions PPT-GPU was tested with
+***The wiki page includes the following:***
 
-- alternatively, You can use our docker image that has all the dependencies installed: ***https://hub.docker.com/repository/docker/yarafa/ppt-gpu/***
+1. Infomation about the [SW & HW dependencies](https://github.com/NMSU-PEARL/PPT-GPU/wiki/SW-&-HW-Dependencies) needed for trace extraction and simualtions
+2. [Steps](https://github.com/NMSU-PEARL/PPT-GPU/wiki/Steps-For-Running) for running the simulator 
+3. Altenatively if you plan to use our pre-configured docker images, you can find the instructions in the [docker images & usage](https://github.com/NMSU-PEARL/PPT-GPU/wiki/Docker-Images-and-Usage) wiki page
 
+<br />
 
-### Simulation
+## GPGPU Benchmarks/Applications
 
-* Linux OS
-* python v3.x   
-  * scipy package (conda install -c scipy)
-  * greenlet package (conda install -c anaconda greenlet)
-  * joblib package (conda install -c anaconda joblib)
-* GCC > v5.x, tested on v.7 and v.9 
-* glibc
-* MPICH (if you plan to use the PDES engine to run multiple kernels in parallel) (tested with version 3.2.3)
-
-- ***you can pull a docker image and use in simulation using this command***   
-      ```
-      docker pull yarafa/ppt-gpu:simulation-latest
-      ```
-
-### Trace Extraction   
-
-* A GPU device with compute capability = 3.5 or later
-* Software dependencies for extracting the memory traces and the SASS instructions traces are in the ***tracing_tool*** directory
-* Software dependencies for extracting the PTX instructions traces are in the ***llvm_tool*** directory
-
-- ***you can pull a docker image and use in trace extraction using this command***  
-STILL IN PROGRESS 
-      ```
-      docker pull yarafa/ppt-gpu:traces-latest
-      ```
-
-
-## Steps for running  
-
-Running simulation is straightforward. Here are the steps: 
-
-
-1. **Configure & Update MPI path**
-SKIP THIS STEP IF RUNNING THROUGH DOCKER
-    * In *simian.py*, update ***defaultMpichLibName*** with the ibmpich.so
-   
-2. **Extract the traces of the application**
-    * Go to ***tracing_tool*** folder and follow the instructions in the Readme file to build the tracing tool files
-    * The ***tracing_tool*** extracts the application memory trace (automatically output a folder named ***memory_traces***) and the application SASS trace (automatically output a folder named ***sass_traces***). It also outputs a configuration file named **app_config.py** that has all information about the application kernels
-    * For example, to get the traces for a certain application you have to call the tracer.so file that was built from the ***tracing_tool*** before running the application:   
-     
-      ```
-      LD_PRELOAD=~/PPT-GPU/tracing_tool/tracer.so ./2mm.out
-      ```
-    
-    * You can also extract the PTX traces using the ***llvm_tool*** for the PTX option.
-    
-      * Go to ***llvm_tool*** folder follow the instructions in the Readme file to build the llvm_tool 
-      * (1) you need to recompile the application using llvm and clang++ compiler option, (2) execute and run the application normally 
-      * There will be a ***PTX_traces*** directory that has per kernel ".ptx" traces just like the ***sass_traces***
-  
- 
-3. **Build the Reuse Distance tool**
-   * Go to ***reuse_distance_tool*** and follow the instructions in the Readme file to build the code
-
-4. **Modeling the correct GPU configurations**  
-    The ***hardware*** folder has an example of multiple hardware configurations. You can choose to model these or define your own in a new file. You can also define the ISA latencies numbers, and the compute capability configurations inside ***hardware/ISA*** and ***hardware/compute_capability***, respectively 
-
-5. **Running the simulations**   
-
-  * Navigate to the home PPT-GPU directory
-    
-  * TO RUN WITHOUT DOCKER: 
-      ```
-    python ppt.py --app <application path> --sass <or --ptx> (for patx/sass instructions traces)
-    --config <target GPU hardware configuration file> --granularity 2 
-    ```
-    
-    For example, running 2mm application on TITANV with sass traces. Assuming that 2mm path is *"/home/test/Workloads/2mm"*
-    ```
-    mpiexec -n 2 python ppt.py --app /home/test/Workloads/2mm/ --sass --config TITANV --granularity 2 
-    ```
-    
-    To choose specific kernels only, (let's say in PTX traces): 
-
-    ```
-    mpiexec -n 1 python ppt.py --app /home/test/Workloads/2mm/ --ptx --config TITANV --granularity 2 --kernel 1
-    ```
-    
- * TO RUN WITH DOCKER: 
-
-    ```
-   docker run --rm -v $(pwd):$(pwd) -v /home/test/Workloads:/home/test/Workloads -w $(pwd) yarafa/ppt-gpu:simulation-latest mpiexec -n 2 python ppt.py --app /home/test/Workloads/2mm/ --sass --config TITANV --granularity 2
-    ```
-    
-    **Kernels are ordered in the *app_config.py* file. Please refer to the file to know the information of kernels and the orders**   
-  
-
-6. **Reading the output**
-
-    The performance results are found inside each application file path. Outputs are per kernel.  
-  
-
-## Worklaods
-
-You can find various GPU benchmarks that can be used in your research in the following repo: https://github.com/NMSU-PEARL/GPGPUs-Workloads 
+You can find various GPU benchmarks that can be used in your research in the following repo: [GPU Workloads](https://github.com/NMSU-PEARL/GPGPUs-Workloads)
 
 
 

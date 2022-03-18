@@ -9,18 +9,18 @@ NVBIT does not require application source code, any pre-compiled GPU application
 
 * For stanalone building and running of the tracing_tool (no docker), please see below: 
 
-## Building the tool
+  ### Building the tool
   
   * Setup **ARCH** variable in the Makefile
   * run make clean; make
 
-## Extracting the traces
+  ### Extracting the traces
   
   ```
   LD_PRELOAD=~/PPT-GPU/tracing_tool/tracer.so ./app.out
   ```
   
-The above command outputs two folders ***memory_traces*** and ***sass_traces*** each has the applications kernel traces. Setup the **MAX_KERNELS** variable in ***tracer.cu*** to define the limit on the number of kernels you want to instrument in the application 
+   The above command outputs two folders ***memory_traces*** and ***sass_traces*** each has the applications kernel traces. Setup the **MAX_KERNELS** variable in ***tracer.cu*** to define the limit on the number of kernels you want to instrument in the application 
   
 
 

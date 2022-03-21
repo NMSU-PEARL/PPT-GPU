@@ -10,11 +10,11 @@ display_usage() {
     echo -e "\t- [-ld  | --leave-docker]              This option is given to allow the user to leave the docker active after executing"
     echo -e "\t- [-h  | --help]              Show this message and exit - it doesn't need any other argument to pass (ex: ./ppt-gpu-traces -h)"
     echo -e "\nExample:"
-    echo -e "\t \"./ppt-gpu-trace-extraction.sh -t /tools/PPT-GPU -w /workloads/2mm -a 2mm.out -d ppt-gpu:traces-cuda11.0\""
+    echo -e "\t \"./ppt-gpu-traces -t /tools/PPT-GPU -w /workloads/2mm -a 2mm.out -d yarafa/ppt-gpu:traces-cuda11.0\""
     echo -e "\t\t- \"-t /tools/PPT-GPU\" represents the PPT-GPU tool path"
-    echo -e "\t\t- \"-w /workloads/2mm\" represents the workloads path where the application is located"
-    echo -e "\t\t- \"-a 2mm.out\" represents the name of the executable of the application"
-    echo -e "\t\t- \"-d ppt-gpu:traces-cuda11.0\" represents the docker image that will be used to run the tool on\n"
+    echo -e "\t\t- \"-w /workloads/2mm\" represents the workloads path where application is located"
+    echo -e "\t\t- \"-a 2mm.out\" represents the name of the executable of the application that we will use to collect traces for"
+    echo -e "\t\t- \"-d yarafa/ppt-gpu:traces-cuda11.0\" represents the docker image that will be used to run the tool on\n"
 }
 
 # detect missing arguments
@@ -159,7 +159,7 @@ UID=$(id -u)
 GID=$(id -g)
 
 echo "Loading the docker container......"
-docker run --rm --name traces-ppt-gpu -tid --user $UID:$GID --env LD_PRELOAD=$DOCKER_TOOL_EXEC_PATH --gpus all -v $WORKLOAD:$DOCKER_WORKLOAD_PATH -v $TOOL:$DOCKER_TOOL_PATH -w $DOCKER_WORKLOAD_PATH --entrypoint /bin/bash $DOCKER  > /dev/null
+docker run --rm --name traces-ppt-gpu -tid --user $UID:$GID --env LD_PRELOAD=$DOCKER_TOOL_EXEC_PATH --gpus device=0 -v $WORKLOAD:$DOCKER_WORKLOAD_PATH -v $TOOL:$DOCKER_TOOL_PATH -w $DOCKER_WORKLOAD_PATH --entrypoint /bin/bash $DOCKER  > /dev/null
 
 echo "Executing the tool inside the docker....."
 docker exec traces-ppt-gpu ./$APP
@@ -169,4 +169,4 @@ if [[ -z $LEAVE_DOCKER ]]; then
     docker container rm -f traces-ppt-gpu > /dev/null
 fi
 
-echo -e "Trace Extraction Completed!\n"
+echo -e "Tracing Completed!\n"
